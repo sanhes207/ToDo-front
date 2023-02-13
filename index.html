@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TO-DO List</title>
+  <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+  
+  <header class="header">
+    <h1 class="header__title">
+      Задачи
+    </h1>
+    <button class="header__add-task">
+      <img class="header__plus" src="./img/plus_icon-icons.com_61187.svg" alt="Кнопка добавления новой категории">
+    </button>
+  </header>
+  
+  <main class="main">
+    <div class="card">
+      <div class="card__header">
+        <h2 class="card__title">
+          Залупка
+        </h2>
+      </div>
+      <div class="card__tasks" id="card-task-${el.id}">
+            <div class="task">
+              <div class="card__checkbox">
+                <input class="checkbox" id=${task.id} type="checkbox">
+              </div>
+              <p class="tasks__description" id=${task.id}>
+                Не сдохнуть
+              </p>
+            </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal modal__task hidden">
+    <div class="modal-window">
+      <div class="modal__header">
+        <h2 class="modal__title">
+          Новая задача
+        </h2>
+      </div>
+      <div class="modal__main">
+        <input class="new-task__title" type="text" placeholder="Название задачи...">
+        <select class="task-category">
+          <option value="" disabled selected>Категории...</option>
+          <option value="Новая категория">Новая категория</option>
+        </select>
+        <div class="modal__button">
+          <button class="button cancel task__cancel-button" type="submit" >
+            Отмена
+          </button>
+          <button class="button accept task__accept-button" type="submit" >
+            Ок
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay"></div>
+  </div>
+
+  <div class="modal modal__category hidden">
+    <div class="modal-window">
+      <div class="modal__header">
+        <h2 class="modal__title">
+          Новая категория
+        </h2>
+      </div>
+      <div class="modal__main">
+        <input class="new-category__title" type="text" placeholder="Название категории...">
+        <div class="modal__button">
+          <button class="button cancel category__cancel-button" type="submit" >
+            Отмена
+          </button>
+          <button class="button accept category__accept-button" type="submit" >
+            Ок
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay"></div>
+  </div>
+
+  
+
+  <script src="./node_modules/axios/dist/axios.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+</html>
