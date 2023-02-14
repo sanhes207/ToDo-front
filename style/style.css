@@ -94,13 +94,13 @@ body {
   gap: 10px;
 }
 
-.new-task__title, .task-category, .new-category__title {
+.new-task__title, .task-category, .new-category__title, .auth__title {
   border: grey solid 2px;
   border-radius: 10px;
   height: 40px;
 }
 
-.new-task__title, .new-category__title {
+.new-task__title, .new-category__title, .auth__title {
   padding-left: 5px;
 }
 
@@ -171,5 +171,6 @@ body {
 }
 
 .checkbox {
+  z-index: -1;
   transform: scale(1.5);
 }
