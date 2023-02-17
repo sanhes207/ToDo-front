@@ -149,6 +149,7 @@ body {
   background: #fff;
   box-shadow: 0 10px 15px rgba(0,0,0, .4);
   border-radius: 10px;
+  justify-self: center;
 }
 
 .card__header {
@@ -167,8 +168,18 @@ body {
 }
 
 .task {
-  display: flex;
+  display: grid;
+  grid-template-columns: 15% 85%;
   justify-content: space-evenly;
+}
+
+.card__checkbox {
+  justify-self: center;
+}
+
+.tasks__description {
+  justify-self: stretch;
+  padding-left: 10px;
 }
 
 .checkbox {
