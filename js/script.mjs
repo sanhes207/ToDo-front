@@ -1,5 +1,5 @@
 import Cookies from "../node_modules/js-cookie/dist/js.cookie.min.mjs";
-import {getUser, getTask, getCategorys, createCategory, createTask} from './axios_instance.js'; 
+import {getUser, getTask, getCategorys, createCategory, createTask, updateTask} from './axios_instance.js'; 
 
 // Переменные для кнопок
 const btnAuth = document.querySelector('.auth__accept-button');
@@ -19,6 +19,27 @@ function setHidden(className) {
 function removeHidden(className) {
   const elem = document.querySelector(`.${className}`);
   elem.classList.remove('hidden');
+}
+
+function removeLineTrought(elem) {
+  elem.classList.remove('line-trought');
+}
+
+function addLineTrought(elem) {
+  elem.classList.add('line-trought');
+}
+
+async function toggle(checkbox, taskParam) {
+  const checkboxId = checkbox.id
+  if (checkbox.checked == false) {
+    const description = document.querySelector(`#task${checkboxId}`);
+    removeLineTrought(description);
+    updateTask(taskParam, checkbox.checked);
+  } else {
+    const description = document.querySelector(`#task${checkboxId}`);
+    addLineTrought(description);
+    updateTask(taskParam, checkbox.checked);
+  }
 }
 
 // Создаем передаваемый элемент с передаваемым классом 
@@ -124,13 +145,21 @@ function composeTask(tasksParam) {
   const checkbox = createElementWithClass('input', 'checkbox')
   checkbox.type = 'checkbox';
   checkbox.checked = tasksParam.is_checked;
+  checkbox.id = tasksParam.id;
 
   cardCheckbox.append(checkbox);
   task.append(cardCheckbox);
 
   const taskDescription = createElementWithClass('p', `tasks__description`);
   taskDescription.textContent = tasksParam.description;
+  taskDescription.id =`task${tasksParam.id}` ;
   task.append(taskDescription);
+
+  checkbox.addEventListener('change', () => {
+    toggle(checkbox, tasksParam);
+  })
+
+  if (checkbox.checked == true) addLineTrought(taskDescription);
 
   return task;
 }
