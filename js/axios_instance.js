@@ -5,12 +5,16 @@ const instance = axios.create({
   baseURL: "http://localhost:8080/api"
 });
 
-// Возвращаем id авторизованного пользователя
+// Возвращаем авторизованного пользователя
 async function getUser(userName) {
   await instance.get(`/user/${userName}`)
-  .then(res => Cookies.set('userID', res.data.id));
+  .then(res => {
+    Cookies.set('userID', res.data.id);
+    Cookies.set('userName', res.data.name)
+  });
 }
 
+// Получаем задачи пользователя
 async function getTask(categoryID) {
   let response;
   await instance.get('/task', {
@@ -25,6 +29,7 @@ async function getTask(categoryID) {
   return response;
 }
 
+// Получаем категории пользователя
 async function getCategorys() {
   let response;
   await instance.get('/category', {
@@ -38,5 +43,22 @@ async function getCategorys() {
   return response;
 }
 
+// Создание новой категории
+async function createCategory(categoryTitle) {
+  await instance.post('/category', {
+    'user_id': Cookies.get('userID'),
+    'title': categoryTitle
+  })
+  .then (res => console.log(res));
+}
 
-export {getUser, getTask, getCategorys};
+// Создание новой задачи
+async function createTask(categoryId, taskDescription) {
+  await instance.post('/task', {
+    "category_id":  categoryId,
+    "description": taskDescription
+  })
+  .then(res => console.log(res));
+}
+
+export {getUser, getTask, getCategorys, createCategory, createTask};
