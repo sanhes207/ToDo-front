@@ -13,7 +13,8 @@ body {
 
 /* Line-trought*/
 .line-trought {
-  text-decoration: line-through;
+  text-decoration: line-through wavy;
+
 }
 
 /*Header style*/
