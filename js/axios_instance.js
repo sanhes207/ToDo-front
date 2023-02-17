@@ -16,31 +16,27 @@ async function getUser(userName) {
 
 // Получаем задачи пользователя
 async function getTask(categoryID) {
-  let response;
-  await instance.get('/task', {
+  const response = await instance.get('/task', {
     headers: {
       'user_id': Cookies.get('userID'),
       'category_id': categoryID
     }
   })
-  .then(res => response = res.data)
-  .catch(err => response = err)
+  .catch(err => console.log(err));
 
-  return response;
+  return await response.data;
 }
 
 // Получаем категории пользователя
 async function getCategorys() {
-  let response;
-  await instance.get('/category', {
+  const response = await instance.get('/category', {
     headers: {
       'user_id': Cookies.get('userID')
     }
   })
-  .then(res => response = res.data)
-  .catch(err => response = err)
+  .catch(err => console.log(err));
 
-  return response;
+  return await response.data;
 }
 
 // Создание новой категории
@@ -49,7 +45,8 @@ async function createCategory(categoryTitle) {
     'user_id': Cookies.get('userID'),
     'title': categoryTitle
   })
-  .then (res => console.log(res));
+  .then (res => console.log(res))
+  .catch(err => console.log(err));
 }
 
 // Создание новой задачи
@@ -58,15 +55,20 @@ async function createTask(categoryId, taskDescription) {
     "category_id":  categoryId,
     "description": taskDescription
   })
-  .then(res => console.log(res));
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
 }
 
+// Обновление состояния задачи
 async function updateTask(task, isChecked) {
   const {id} = task;
+
   await instance.put('/task', {
     "is_checked": isChecked,
     "task_id": id
   })
-  .then(res => console.log(res));
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
 }
+
 export {getUser, getTask, getCategorys, createCategory, createTask, updateTask};
