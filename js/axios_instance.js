@@ -61,4 +61,12 @@ async function createTask(categoryId, taskDescription) {
   .then(res => console.log(res));
 }
 
-export {getUser, getTask, getCategorys, createCategory, createTask};
+async function updateTask(task, isChecked) {
+  const {id} = task;
+  await instance.put('/task', {
+    "is_checked": isChecked,
+    "task_id": id
+  })
+  .then(res => console.log(res));
+}
+export {getUser, getTask, getCategorys, createCategory, createTask, updateTask};
