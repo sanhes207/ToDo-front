@@ -9,26 +9,33 @@ const btnAcceptAddTask = document.querySelector('.task__accept-button');
 const btnAcceptAddCategory = document.querySelector('.category__accept-button');
 const btnCancelAddCategory = document.querySelector('.category__cancel-button');
 
-// убирает класс hidden
-function setHidden(className) {
+// Добавление сообщения о неправильном заполнении поля
+function errorMsg(elem) {
+  const modalMain = document.querySelector(`.modal__${elem} .modal__main`);
+  const elemTitle = document.querySelector(`.new-${elem}__title`);
+
+  const errorMsg = createElementWithClass('h3', 'error-msg');
+  errorMsg.textContent = `Введено не верная форма ${elem == 'category'? 'категории': 'задачи'}`;
+
+  modalMain.prepend(errorMsg);
+  elemTitle.classList.add('.error-box');
+}
+
+// меняет класс hidden
+function toggleHidden(className) {
   const elem = document.querySelector(`.${className}`);
 
-  elem.classList.add('hidden');
+  elem.classList.toggle('hidden');
 };
 
-// убирает класс hidden
-function removeHidden(className) {
-  const elem = document.querySelector(`.${className}`);
-
-  elem.classList.remove('hidden');
-};
-
+// Переключение перечеркивающихся задач
 function toggleLineTrought(desc, checked) {
   desc.classList.remove('line-trought');
 
   if (checked) desc.classList.add('line-trought');
 };
 
+//  Переключатель
 async function toggle(checkbox, taskParam) {
   const checkboxId = checkbox.id;
   const description = document.querySelector(`#task${checkboxId}`);
@@ -47,6 +54,7 @@ function createElementWithClass(el, className) {
   return element;
 };
 
+// функция обновляет selector с категориями
 async function updateCategoryList() {
   const userCategoryList = document.querySelector('.task-category');
 
@@ -77,7 +85,7 @@ btnAuth.addEventListener('click', async () => {
   
   appendCard();
 
-  setHidden('modal__auth');
+  toggleHidden('modal__auth');
 });
 
 // Добавить новую карточку
@@ -159,7 +167,7 @@ function composeTask(tasksParam) {
 
 // Кнопка добавления новой задачи
 btnAddTask.addEventListener('click', async () => {
-  removeHidden('modal__task');
+  toggleHidden('modal__task');
 
   updateCategoryList();
 });
@@ -169,36 +177,44 @@ btnAcceptAddTask.addEventListener('click', async () => {
   const selectValue = document.querySelector('.task-category').value;
 
   if (selectValue == "Новая категория") {
-    removeHidden('modal__category');
+    toggleHidden('modal__category');
   } else if (selectValue) {
     const categoryList = await getCategorys();
     const category = categoryList.filter(el => el.title == selectValue);
     const taskDescription = document.querySelector('.new-task__title').value;
 
-    createTask(category[0].id, taskDescription);
+    if (taskDescription && taskDescription.length > 3 && !taskDescription.startsWith(' ')) {
+      await createTask(category[0].id, taskDescription);
+      
+      appendTask(category[0]);
+    } else {
+      errorMsg('task');
+    }
   };
-
-  appendCard(); 
 });
 
 // Добавление новой категории
 btnAcceptAddCategory.addEventListener('click', async () => {
   const categoryTitle = document.querySelector('.new-category__title').value;
-  await createCategory(categoryTitle);
-  appendCard();
+  if (categoryTitle && categoryTitle.length > 3 && !categoryTitle.startsWith(' ')) {
+    await createCategory(categoryTitle);
 
-  updateCategoryList();
+    appendCard();
 
-  setHidden('modal__category');
+    updateCategoryList();
+
+    toggleHidden('modal__category');
+  } else {
+    errorMsg('category');
+  }
 });
 
 // Закрыть меню добавления задач
 btnCancelAddTask.addEventListener('click', () => {
-  setHidden('modal__task');
+  toggleHidden('modal__task');
 });
 
 // Закрыть меню добавления категорий
 btnCancelAddCategory.addEventListener('click', () => {
-  setHidden('modal__category');
+  toggleHidden('modal__category');
 });
-
