@@ -91,7 +91,7 @@ body {
 .modal__main {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 15px;
   gap: 10px;
 }
 
@@ -184,4 +184,15 @@ body {
 
 .checkbox {
   zoom: 150%;
+}
+
+/* Error-message */
+.error-msg {
+  font-size: 15px;
+  color: red;
+  margin: 5px auto;
+}
+
+.error-box {
+  border: red solid 2px;
 }
