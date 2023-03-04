@@ -32,7 +32,7 @@ async function getTask(categoryID) {
 // Получаем категории пользователя
 async function getCategorys() {
   const response = await instance.get('/category', {
-    headers: {
+    params: {
       'user_id': Cookies.get('userID')
     }
   })
