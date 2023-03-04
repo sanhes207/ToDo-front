@@ -16,10 +16,12 @@ async function getUser(userName) {
 
 // Получаем задачи пользователя
 async function getTask(categoryID) {
-  const response = await instance.get('/task', {
-    headers: {
-      'user_id': Cookies.get('userID'),
+  const response = await instance.get('/task', {  
+    params: {
       'category_id': categoryID
+    },
+    headers: {
+      'user_id': Cookies.get('userID')
     }
   })
   .catch(err => console.log(err));
@@ -39,11 +41,20 @@ async function getCategorys() {
   return await response.data;
 }
 
+// Получаем категории пользователя
+async function getColor() {
+  const response = await instance.get('/category/color')
+  .catch(err => console.log(err));
+
+  return await response.data;
+}
+
 // Создание новой категории
-async function createCategory(categoryTitle) {
+async function createCategory(categoryTitle,categoryColor) {
   await instance.post('/category', {
     'user_id': Cookies.get('userID'),
-    'title': categoryTitle
+    'title': categoryTitle,
+    'color_id': categoryColor || 1
   })
   .then (res => console.log(res))
   .catch(err => console.log(err));
@@ -71,4 +82,4 @@ async function updateTask(task, isChecked) {
   .catch(err => console.log(err));
 }
 
-export {getUser, getTask, getCategorys, createCategory, createTask, updateTask};
+export {getUser, getTask, getCategorys, createCategory, createTask, updateTask, getColor};

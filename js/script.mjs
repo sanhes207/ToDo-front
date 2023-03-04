@@ -1,5 +1,5 @@
 import Cookies from "../node_modules/js-cookie/dist/js.cookie.min.mjs";
-import {getUser, getTask, getCategorys, createCategory, createTask, updateTask} from './axios_instance.js'; 
+import {getUser, getTask, getCategorys, createCategory, createTask, updateTask, getColor} from './axios_instance.js'; 
 
 // Переменные для кнопок
 const btnAuth = document.querySelector('.auth__accept-button');
@@ -8,6 +8,15 @@ const btnCancelAddTask = document.querySelector('.task__cancel-button');
 const btnAcceptAddTask = document.querySelector('.task__accept-button');
 const btnAcceptAddCategory = document.querySelector('.category__accept-button');
 const btnCancelAddCategory = document.querySelector('.category__cancel-button');
+
+function hex2rgb(c) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(c);
+  return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+  } : null;
+}
 
 // Добавление сообщения о неправильном заполнении поля
 function errorMsg(elem) {
@@ -52,6 +61,24 @@ function createElementWithClass(el, className) {
   element.classList.add(className);
 
   return element;
+};
+
+async function updateColorList() {
+  const colorCategoryList = document.querySelector('.category-color');
+  const colorList = await getColor();
+
+  console.log(colorList);
+
+  colorCategoryList.innerHTML = `<option value="" disabled selected>Выберите цвет...</option>`;
+
+  colorList.forEach(color => {
+    const option = document.createElement('option');
+
+    option.value = color.id;
+    option.textContent = color.title;
+
+    colorCategoryList.append(option);
+  });
 };
 
 // функция обновляет selector с категориями
@@ -107,6 +134,8 @@ async function appendCard() {
 // Создается и заполняется макет карточки категорий
 function composeCard(category) {
   const card = createElementWithClass('div', 'card');
+  const rgbaColor = hex2rgb(category.hex_code);
+  card.style.background = `rgba(${rgbaColor.r}, ${rgbaColor.g}, ${rgbaColor.b}, .5)`;
 
   card.id = `card${category.id}`;
 
@@ -127,6 +156,7 @@ function composeCard(category) {
 // Добавить новую задачу
 async function appendTask(categoryParam) {
   const cardTask = document.querySelector(`#card${categoryParam.id} > .card__tasks`);
+  cardTask.innerHTML = ''
   const tasksList = await getTask(categoryParam.id);
 
   tasksList.forEach(task => {
@@ -178,6 +208,8 @@ btnAcceptAddTask.addEventListener('click', async () => {
 
   if (selectValue == "Новая категория") {
     toggleHidden('modal__category');
+
+    updateColorList();
   } else if (selectValue) {
     const categoryList = await getCategorys();
     const category = categoryList.filter(el => el.title == selectValue);
@@ -196,8 +228,10 @@ btnAcceptAddTask.addEventListener('click', async () => {
 // Добавление новой категории
 btnAcceptAddCategory.addEventListener('click', async () => {
   const categoryTitle = document.querySelector('.new-category__title').value;
+  const categoryColor = document.querySelector('.category-color').value;
+
   if (categoryTitle && categoryTitle.length > 3 && !categoryTitle.startsWith(' ')) {
-    await createCategory(categoryTitle);
+    await createCategory(categoryTitle, categoryColor);
 
     appendCard();
 

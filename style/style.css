@@ -95,7 +95,7 @@ body {
   gap: 10px;
 }
 
-.new-task__title, .task-category, .new-category__title, .auth__title {
+.new-task__title, .task-category, .new-category__title, .auth__title, .modal-choice  {
   border: grey solid 2px;
   border-radius: 10px;
   height: 40px;
@@ -105,7 +105,7 @@ body {
   padding-left: 5px;
 }
 
-.task-category {
+.modal-choice {
   color: grey;
 }
 
@@ -146,7 +146,6 @@ body {
 
 .card {
   width: 25vw;
-  background: #fff;
   box-shadow: 0 10px 15px rgba(0,0,0, .4);
   border-radius: 10px;
   justify-self: center;
