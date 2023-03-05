@@ -139,8 +139,8 @@ body {
 /* Card Style */
 .main {
   padding: 50px;
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
+  flex-wrap: wrap;
   gap: 50px;
 }
 
