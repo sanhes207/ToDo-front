@@ -135,8 +135,8 @@ async function appendCard() {
 function composeCard(category) {
   const card = createElementWithClass('div', 'card');
   const rgbaColor = hex2rgb(category.hex_code);
+  
   card.style.background = `rgba(${rgbaColor.r}, ${rgbaColor.g}, ${rgbaColor.b}, .5)`;
-
   card.id = `card${category.id}`;
 
   const cardHeader = createElementWithClass('div', 'card__header');
@@ -156,8 +156,9 @@ function composeCard(category) {
 // Добавить новую задачу
 async function appendTask(categoryParam) {
   const cardTask = document.querySelector(`#card${categoryParam.id} > .card__tasks`);
-  cardTask.innerHTML = ''
   const tasksList = await getTask(categoryParam.id);
+
+  cardTask.innerHTML = ''
 
   tasksList.forEach(task => {
     cardTask.append(composeTask(task));
