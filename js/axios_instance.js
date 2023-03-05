@@ -18,11 +18,9 @@ async function getUser(userName) {
 async function getTask(categoryID) {
   const response = await instance.get('/task', {  
     params: {
-      'category_id': categoryID
-    },
-    headers: {
+      'category_id': categoryID,
       'user_id': Cookies.get('userID')
-    }
+    },
   })
   .catch(err => console.log(err));
 
